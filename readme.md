@@ -1,7 +1,7 @@
 fourchan
 --------
 
-Small wrapper for 4chan JSON [API] (https://github.com/4chan/4chan-API).
+Small wrapper for 4chan JSON [API](https://github.com/4chan/4chan-API).
 
 Documentation
 --------
