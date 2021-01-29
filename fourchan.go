@@ -168,9 +168,11 @@ func GetBoards() ([]Board, error) {
 	if err != nil {
 		return nil, wrap(err)
 	}
-	var boards []Board
-	err = json.Unmarshal(data, &boards)
-	return boards, wrap(err)
+	response :=struct{
+		Boards []Board `json:"boards"`
+	}{}
+	err = json.Unmarshal(data, &response)
+	return response.Boards, wrap(err)
 }
 
 func wrap(err error) error {
