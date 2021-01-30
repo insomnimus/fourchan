@@ -109,7 +109,7 @@ func (b *Board) Catalog() ([]Page, error) {
 
 // GetThread returns a complete thread.
 //
-// board: short code of the board, i.e "mu" or "g". 
+// board: short code of the board, i.e "mu" or "g".
 // id: threads thread no/id.
 func GetThread(board string, id ThreadNo) (*FullThread, error) {
 	uri := fmt.Sprintf("%s/%s/thread/%s.json", BASE, board, id)
