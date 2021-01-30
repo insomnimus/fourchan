@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-// endpoints
+// endpoints.
 const (
 	BoardsEndpoint = "https://a.4cdn.org/boards.json"
 	BASE           = "https://a.4cdn.org"
 )
 
-// ThreadNo is the id of a thread
+// ThreadNo is the id of a thread.
 type ThreadNo int
 
 func (t ThreadNo) String() string {
@@ -23,34 +23,21 @@ func (t ThreadNo) String() string {
 
 // Page represents a page in a board.
 type Page struct {
-	// order of the page
+	// order of the page.
 	PageNo  int             `json:"page"`
 	Threads []ThreadPreview `json:"threads"`
-}
-
-// TODO: remove this.
-type Reply struct {
-	Capcode  string `json:"capcode"`
-	Comment  string `json:"com"`
-	Ext      string `json:"ext"`
-	Filename string `json:"filename"`
-	Name     string `json:"name"`
-	No       int    `json:"no"`
-	Now      string `json:"now"`
-	Resto    int    `json:"resto"`
-	Time     int    `json:"time"`
 }
 
 // ThreadPreview is a preview for a thread.
 type ThreadPreview struct {
 	// Caption code. OP only, can be empty.
-	Capcode string `json:"capcode,omitempty"`
+	CapCode string `json:"capcode,omitempty"`
 	// 1= closed, 0 = open.
 	Closed int `json:"closed,omitempty"`
 	// OP's comment, if any.
 	Comment      string `json:"com"`
 	Ext          string `json:"ext"`
-	Filename     string `json:"filename"`
+	FileName     string `json:"filename"`
 	LastModified int    `json:"last_modified"`
 	LastReplies  []Post `json:"last_replies,omitempty"`
 	Name         string `json:"name"`
@@ -59,11 +46,13 @@ type ThreadPreview struct {
 	Now          string   `json:"now"`
 	OmittedPosts int      `json:"omitted_posts,omitempty"`
 	ReplyCount   int      `json:"replies"`
-	Resto        int      `json:"resto"`
-	SemanticURL  string   `json:"semantic_url"`
-	Sticky       int      `json:"sticky,omitempty"`
-	Subject      string   `json:"sub,omitempty"`
-	Time         int      `json:"time"`
+	// resto is 0 for the op.
+	Resto       int    `json:"resto"`
+	SemanticURL string `json:"semantic_url"`
+	// sticky 1= pinned, 0= not pinned.
+	Sticky  int    `json:"sticky,omitempty"`
+	Subject string `json:"sub,omitempty"`
+	Time    int    `json:"time"`
 }
 
 // FullThread represents an entire thread with all of its contents.
@@ -87,17 +76,18 @@ type Post struct {
 	// the text content of the post.
 	Comment string `json:"com"`
 	// posts attachments file name, if any.
-	Filename string `json:"filename"`
+	FileName string `json:"filename"`
 	// file extension.
 	Ext  string `json:"ext"`
 	Time int    `json:"time"`
-	// replying to post id, 0 for op
+	// 0 for op.
 	Resto int `json:"resto"`
 	// caption code, OP only. can be empty.
-	Capcode       string `json:"capcode"`
-	SemanticURL   string `json:"semantic_url,omitempty"`
-	ReplyCount    int    `json:"replies,omitempty"`
-	UniquePosters int    `json:"unique_ips,omitempty"`
+	CapCode     string `json:"capcode"`
+	SemanticURL string `json:"semantic_url,omitempty"`
+	ReplyCount  int    `json:"replies,omitempty"`
+	// number of unique posters.
+	UniquePosters int `json:"unique_ips,omitempty"`
 }
 
 // Board represents a 4chan board.
@@ -119,7 +109,7 @@ func (b *Board) Catalog() ([]Page, error) {
 
 // GetThread returns a complete thread.
 //
-// board: short code of the board, i.e "mu" or "g".
+// board: short code of the board, i.e "mu" or "g". 
 // id: threads thread no/id.
 func GetThread(board string, id ThreadNo) (*FullThread, error) {
 	uri := fmt.Sprintf("%s/%s/thread/%s.json", BASE, board, id)
@@ -168,7 +158,7 @@ func GetBoards() ([]Board, error) {
 	if err != nil {
 		return nil, wrap(err)
 	}
-	response :=struct{
+	response := struct {
 		Boards []Board `json:"boards"`
 	}{}
 	err = json.Unmarshal(data, &response)
